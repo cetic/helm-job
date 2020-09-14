@@ -1,0 +1,5 @@
+{{- include "common.configmap" (list . "job.configmap") -}}
+{{- define "job.configmap" -}}
+data:
+  myvalue: "Hello World"
+{{- end -}}

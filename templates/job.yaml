@@ -1,0 +1,15 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: test
+spec:
+  template:
+    spec:
+      containers:
+      - {{ template "common.container" (list . "job.job.container") }}
+      restartPolicy: Never
+  backoffLimit: 4
+
+{{- define "job.job.container" -}}
+## Define overrides for your Container here, e.g.
+{{- end -}}

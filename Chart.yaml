@@ -1,0 +1,20 @@
+---
+apiVersion: v2
+name: job
+version: 0.1.0
+appVersion: 0.1.0
+description: A Helm chart which provide a DRY job deployment mechanism
+keywords:
+  - job
+  - template
+  - DRY
+  - generic
+source:
+  - https://github.com/cetic/helm-job
+maintainers:
+  - name: alexnuttinck
+  - name: terence-bigtt
+dependencies:
+- name: common
+  version: "^0.0.5"
+  repository: "https://kubernetes-charts-incubator.storage.googleapis.com/"

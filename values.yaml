@@ -1,0 +1,33 @@
+# Default values for microservice.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+global:
+  replicaCount: 1
+  environment: []
+
+image:
+  repository: "crccheck/hello-world"
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+nameOverride: ""
+fullnameOverride: ""
+
+annotations: {}
+
+#environment:
+#  - name: VAR1
+#    value: value1
+#  - name: VAR2
+#    value: value2
+
+resources:
+  limits:
+    cpu: 2
+    memory: 2000Mi
+  requests:
+    cpu: 500m
+    memory: 500Mi
