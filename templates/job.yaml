@@ -1,15 +1,51 @@
+---
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: test
+  name: {{ template "common.fullname" . }}
 spec:
   template:
     spec:
+    {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+      - name: {{ .Values.imagePullSecrets }}
+    {{- end }}
+    {{- if .Values.securityContext.runAsUser }}
+      securityContext:
+        runAsUser: {{ .Values.securityContext.runAsUser }}
+        {{- if .Values.securityContext.runAsGroup }}
+        runAsGroup: {{ .Values.securityContext.runAsGroup }}
+        {{- end }}
+        {{- if .Values.securityContext.fsGroup }}
+        fsGroup: {{ .Values.securityContext.fsGroup }}
+        {{- end }}
+    {{- end }}
       containers:
-      - {{ template "common.container" (list . "job.job.container") }}
-      restartPolicy: Never
-  backoffLimit: 4
-
-{{- define "job.job.container" -}}
-## Define overrides for your Container here, e.g.
-{{- end -}}
+      - {{ template "common.container" (list . "job.container") }}
+      {{- define "job.container" -}}
+      ## Define overrides Container here
+      {{- with .Values.env }}
+      env:
+      {{ toYaml . | indent 12 }}
+      {{- end }}
+      {{- if .Values.command }}
+      command: {{ .Values.command }}
+      {{- end }}
+      {{- if .Values.args }}
+      args: {{ .Values.args }}
+      {{- end }}
+      {{- end -}}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 12 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 12 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 12 }}
+      {{- end }}
+      restartPolicy: {{ .Values.restartPolicy }}
+  backoffLimit: {{ .Values.backoffLimit }}

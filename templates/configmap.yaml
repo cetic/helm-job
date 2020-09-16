@@ -1,5 +1,4 @@
 {{- include "common.configmap" (list . "job.configmap") -}}
 {{- define "job.configmap" -}}
-data:
-  myvalue: "Hello World"
+## Define overrides for your Configmap here.
 {{- end -}}
