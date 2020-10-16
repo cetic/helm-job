@@ -24,9 +24,10 @@ spec:
       - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.imagePullPolicy }}
         name: {{ template "common.fullname" . }}
-        {{- with .Values.environment }}
         env:
-{{ toYaml . | indent 8 }}
+        {{- range concat (.Values.global.environment) (.Values.environment | default list)}}
+        - name: {{ .name | quote}}
+          value: {{ .value | quote }}
         {{- end }}
         {{- if .Values.command }}
         command: {{ .Values.command }}
