@@ -24,7 +24,7 @@ spec:
       - {{ template "common.container" (list . "job.container") }}
       {{- define "job.container" -}}
       ## Define overrides Container here
-      {{- with .Values.env }}
+      {{- with .Values.environment }}
       env:
       {{ toYaml . | indent 12 }}
       {{- end }}
