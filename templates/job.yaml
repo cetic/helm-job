@@ -21,31 +21,38 @@ spec:
         {{- end }}
     {{- end }}
       containers:
-      - {{ template "common.container" (list . "job.container") }}
-      {{- define "job.container" -}}
-      ## Define overrides Container here
-      {{- with .Values.environment }}
-      env:
-      {{ toYaml . | indent 12 }}
-      {{- end }}
-      {{- if .Values.command }}
-      command: {{ .Values.command }}
-      {{- end }}
-      {{- if .Values.args }}
-      args: {{ .Values.args }}
-      {{- end }}
-      {{- end -}}
+      - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.imagePullPolicy }}
+        name: {{ template "common.fullname" . }}
+        {{- with .Values.environment }}
+        env:
+{{ toYaml . | indent 8 }}
+        {{- end }}
+        {{- if .Values.command }}
+        command: {{ .Values.command }}
+        {{- end }}
+        {{- if .Values.args }}
+        args: {{ .Values.args }}
+        {{- end }}
+        {{- with .Values.resources }}
+        resources:
+{{ toYaml . | indent 10 }}
+        {{- end }}
+        {{- with .Values.volumeMounts }}
+        volumeMounts:
+{{ toYaml . | indent 8 }}
+        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
-{{ toYaml . | indent 12 }}
+{{ toYaml . | indent 8 }}
       {{- end }}
       {{- with .Values.affinity }}
       affinity:
-{{ toYaml . | indent 12 }}
+{{ toYaml . | indent 8 }}
       {{- end }}
       {{- with .Values.tolerations }}
       tolerations:
-{{ toYaml . | indent 12 }}
+{{ toYaml . | indent 8 }}
       {{- end }}
       restartPolicy: {{ .Values.restartPolicy }}
   backoffLimit: {{ .Values.backoffLimit }}
