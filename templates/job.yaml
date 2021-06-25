@@ -4,6 +4,9 @@ kind: Job
 metadata:
   name: {{ template "common.fullname" . }}
 spec:
+  {{- if .Values.ttlSecondsAfterFinished }}
+  ttlSecondsAfterFinished: {{ .Values.ttlSecondsAfterFinished }}
+  {{- end }}
   template:
     spec:
     {{- if .Values.imagePullSecrets }}
