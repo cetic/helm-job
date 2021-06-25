@@ -30,10 +30,16 @@ spec:
           value: {{ .value | quote }}
         {{- end }}
         {{- if .Values.command }}
-        command: {{ .Values.command }}
+        command:
+        {{- range .Values.command }}
+        - {{ . | quote }}
+        {{- end }}
         {{- end }}
         {{- if .Values.args }}
-        args: {{ .Values.args }}
+        args:
+        {{- range .Values.args }}
+        - {{ . | quote }}
+        {{- end }}
         {{- end }}
         {{- with .Values.resources }}
         resources:
