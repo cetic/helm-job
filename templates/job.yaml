@@ -9,6 +9,7 @@ spec:
   {{- end }}
   template:
     spec:
+    serviceAccountName: {{ .Values.serviceAccount.name }}
     {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
       {{ .Values.imagePullSecrets | toYaml }}
