@@ -3,6 +3,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: {{ template "common.fullname" . }}-{{ randAlphaNum 8 | lower }}
+  namespace: {{ .Values.namespace }}
 spec:
   {{- if .Values.ttlSecondsAfterFinished }}
   ttlSecondsAfterFinished: {{ .Values.ttlSecondsAfterFinished }}
