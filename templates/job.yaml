@@ -47,6 +47,9 @@ spec:
         {{- end }}
         {{- end }}
         {{- with .Values.resources }}
+      envFrom: {{- range concat (.Values.global.environmentFrom) (.Values.environmentFrom | default list)}}
+      - secretRef:
+          name: {{ .name | quote}}
         resources:
 {{ toYaml . | indent 10 }}
         {{- end }}
