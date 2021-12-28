@@ -1,7 +1,7 @@
 ---
 apiVersion: v2
 name: job
-version: 0.1.1
+version: 0.1.12
 appVersion: 0.1.1
 description: A Helm chart which provide a DRY job deployment mechanism
 keywords:
@@ -17,4 +17,3 @@ maintainers:
 dependencies:
 - name: common
   version: "^0.0.5"
-  repository: "https://kubernetes-charts-incubator.storage.googleapis.com/"

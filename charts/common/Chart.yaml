@@ -1,0 +1,7 @@
+apiVersion: v1
+appVersion: 0.0.5
+deprecated: true
+description: Common chartbuilding components and helpers
+home: https://helm.sh
+name: common
+version: 0.0.7

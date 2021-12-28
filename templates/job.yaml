@@ -2,13 +2,18 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ template "common.fullname" . }}
+  name: {{ template "common.fullname" . }}-{{ randAlphaNum 8 | lower }}
+  namespace: {{ .Values.namespace }}
 spec:
+  {{- if .Values.ttlSecondsAfterFinished }}
+  ttlSecondsAfterFinished: {{ .Values.ttlSecondsAfterFinished }}
+  {{- end }}
   template:
     spec:
+      serviceAccountName: {{ .Values.serviceAccount.name }}
     {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
-      - name: {{ .Values.imagePullSecrets }}
+      {{ .Values.imagePullSecrets | toYaml }}
     {{- end }}
     {{- if .Values.securityContext.runAsUser }}
       securityContext:
@@ -22,7 +27,7 @@ spec:
     {{- end }}
       containers:
       - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-        imagePullPolicy: {{ .Values.image.imagePullPolicy }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         name: {{ template "common.fullname" . }}
         env:
         {{- range concat (.Values.global.environment) (.Values.environment | default list)}}
@@ -30,12 +35,21 @@ spec:
           value: {{ .value | quote }}
         {{- end }}
         {{- if .Values.command }}
-        command: {{ .Values.command }}
+        command:
+        {{- range .Values.command }}
+        - {{ . | quote }}
+        {{- end }}
         {{- end }}
         {{- if .Values.args }}
-        args: {{ .Values.args }}
+        args:
+        {{- range .Values.args }}
+        - {{ . | quote }}
+        {{- end }}
         {{- end }}
         {{- with .Values.resources }}
+      envFrom: {{- range concat (.Values.global.environmentFrom) (.Values.environmentFrom | default list)}}
+      - secretRef:
+          name: {{ .name | quote}}
         resources:
 {{ toYaml . | indent 10 }}
         {{- end }}

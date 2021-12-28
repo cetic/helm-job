@@ -14,6 +14,9 @@ image:
 #command: ["/bin/sh","-c"]
 #args: ["echo 'consuming a message'; sleep 5"]
 
+## Set time after completetion to delete job resource
+#ttlSecondsAfterFinished: 100
+
 ## Define env
 # env:
 
@@ -37,6 +40,13 @@ annotations: {}
 #    value: value1
 #  - name: VAR2
 #    value: value2
+
+#serviceAccount:
+#  create: true
+#  name: rideshur-web-sa
+#  annotations:
+#    eks.amazonaws.com/role-arn: arn:aws:iam::895470510842:role/humnai-dev-rideshur-webapp-role
+
 
 ## define resources
 #resources:
